@@ -546,6 +546,7 @@ public class PBRShader extends DefaultShader
         vertexColorLayers = computeVertexColorLayers(renderable);
 
         numCSM = computeNumberOfShadowCascades(renderable);
+        Gdx.app.log("canRender","csm count = "+numCSM);
 
         // base color
         u_BaseColorTexture = register(baseColorTextureUniform, baseColorTextureSetter);
@@ -651,8 +652,10 @@ public class PBRShader extends DefaultShader
         if(this.vertexColorLayers != computeVertexColorLayers(renderable)) return false;
 
         // compare number of shadow map cascades
-        if(numCSM != computeNumberOfShadowCascades(renderable))
+        if(numCSM != computeNumberOfShadowCascades(renderable)) {
+            Gdx.app.log("canRender","csm count mismatch got "+numCSM+" expected "+computeNumberOfShadowCascades(renderable));
             return false;
+        }
 
         return super.canRender(renderable);
     }
@@ -713,19 +716,16 @@ public class PBRShader extends DefaultShader
 
         u_ambientLight = program.fetchUniformLocation("u_ambientLight", false);
 
+        // Monstrous
 //        u_csmSamplers = program.fetchUniformLocation("u_csmSamplers", false);
 //        u_csmPCFClip = program.fetchUniformLocation("u_csmPCFClip", false);
 //        u_csmTransforms = program.fetchUniformLocation("u_csmTransforms", false);
 
-        // Monstrous
-
         for (int i = 0; i < numCSM; i++) {
-            u_csmSamplers[i] = program.fetchUniformLocation("u_csmSamplers[" + i+"]", true);
+            u_csmSamplers[i] = program.fetchUniformLocation("u_csmSamplers" + i, true);
             u_csmTransforms[i] = program.fetchUniformLocation("u_csmTransforms[" + i + "]", true);
             u_csmPCFClip[i] = program.fetchUniformLocation("u_csmPCFClip[" + i + "]", true);
         }
-
-
         // end Monstrous
     }
 
@@ -828,6 +828,7 @@ public class PBRShader extends DefaultShader
         CascadeShadowMapAttribute csmAttrib = attributes.get(CascadeShadowMapAttribute.class, CascadeShadowMapAttribute.Type);
         if(csmAttrib != null && u_csmSamplers[0] >= 0){ // Monstrous
             Array<DirectionalShadowLight> lights = csmAttrib.cascadeShadowMap.lights;
+            int[] units = new int[lights.size];
             for(int i=0 ; i<lights.size ; i++){
                 DirectionalShadowLight light = lights.get(i);
                 float mapSize = light.getDepthMap().texture.getWidth();
@@ -835,6 +836,7 @@ public class PBRShader extends DefaultShader
                 float clip = 3.f / (2 * mapSize);
 
                 int unit = context.textureBinder.bind(light.getDepthMap());
+                units[i] = unit;
 //                program.setUniformi(u_csmSamplers + i, unit);
 //                program.setUniformMatrix(u_csmTransforms + i, light.getProjViewTrans());
 //                program.setUniformf(u_csmPCFClip + i, pcf, clip);

@@ -2,7 +2,11 @@
 
 A [libGDX](https://libgdx.com/) project generated with [gdx-liftoff](https://github.com/libgdx/gdx-liftoff).
 
+Test of cascaded shadows on different platforms.
+Modified gdx-gltf, in particular PBRShader.java and shadows.glsl to make it work with Web GL (gdx-teavm, html).
 
+To check: performance impact. gdx-teavm version seems very slow (9 fps).
+To check: when num CSM changes, the shader needs to be rebuilt (once).
 
 
 

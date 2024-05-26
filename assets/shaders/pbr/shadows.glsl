@@ -6,6 +6,7 @@ varying vec3 v_shadowMapUv;
 
 #ifdef numCSM
 
+// arrays of samplers don't seem to work well with WebGL so use invididual uniforms instead
 uniform sampler2D u_csmSamplers0;
 uniform sampler2D u_csmSamplers1;
 uniform sampler2D u_csmSamplers2;
