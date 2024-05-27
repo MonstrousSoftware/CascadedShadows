@@ -32,7 +32,7 @@ public class PBRShaderProvider extends DefaultShaderProvider
 
 	public static String getDefaultVertexShader () {
 		if (defaultVertexShader == null)
-            defaultVertexShader = ShaderParser.parse(Gdx.files.internal("shaders/pbr/pbr.vs.glsl"));
+            defaultVertexShader = ShaderParser.parse(Gdx.files.internal("shaders/pbr/pbr.vs.glsl"));        // for testing
 //			defaultVertexShader = ShaderParser.parse(Gdx.files.classpath("net/mgsx/gltf/shaders/pbr/pbr.vs.glsl"));
 		return defaultVertexShader;
 	}
@@ -41,8 +41,8 @@ public class PBRShaderProvider extends DefaultShaderProvider
 
 	public static String getDefaultFragmentShader () {
 		if (defaultFragmentShader == null)
-			defaultFragmentShader = ShaderParser.parse(Gdx.files.internal("shaders/pbr/pbr.fs.glsl"));
-            //defaultFragmentShader = ShaderParser.parse(Gdx.files.classpath("net/mgsx/gltf/shaders/pbr/pbr.fs.glsl"));
+			defaultFragmentShader = ShaderParser.parse(Gdx.files.internal("shaders/pbr/pbr.fs.glsl"));          // for testing
+//            defaultFragmentShader = ShaderParser.parse(Gdx.files.classpath("net/mgsx/gltf/shaders/pbr/pbr.fs.glsl"));
 		return defaultFragmentShader;
 	}
 

@@ -11,12 +11,12 @@ import com.badlogic.gdx.math.Vector3;
 import com.monstrous.shadowtest.gui.GUI;
 import net.mgsx.gltf.loaders.gltf.GLTFLoader;
 import net.mgsx.gltf.scene3d.attributes.PBRCubemapAttribute;
+import net.mgsx.gltf.scene3d.attributes.PBRFloatAttribute;
 import net.mgsx.gltf.scene3d.attributes.PBRTextureAttribute;
 import net.mgsx.gltf.scene3d.lights.DirectionalShadowLight;
 import net.mgsx.gltf.scene3d.scene.*;
 import net.mgsx.gltf.scene3d.shaders.PBRShaderProvider;
 import net.mgsx.gltf.scene3d.utils.IBLBuilder;
-import text.formic.Stringf;
 
 
 public class Main extends ApplicationAdapter {
@@ -37,10 +37,11 @@ public class Main extends ApplicationAdapter {
     private ErrorConsole errors;
     private GLProfiler glProfiler;
 
+
     final GLErrorListener customListener = new GLErrorListener() {
         @Override
         public void onError (int error) {
-            errors.addMessage("GL error code: "+ Stringf.format("%X", error) );
+            errors.addMessage("GL error code: "+ error );
         }
     };
 
@@ -48,11 +49,14 @@ public class Main extends ApplicationAdapter {
     @Override
     public void create() {
 
+
         errors = new ErrorConsole();
-        glProfiler = new GLProfiler(Gdx.graphics);
-        glProfiler.enable();
-        //glProfiler.setListener(customListener);
-        glProfiler.setListener(GLErrorListener.THROWING_LISTENER);
+        if(Settings.useGLprofiler) {
+            glProfiler = new GLProfiler(Gdx.graphics);
+            glProfiler.enable();
+            //glProfiler.setListener(customListener);
+            glProfiler.setListener(GLErrorListener.THROWING_LISTENER);
+        }
 
         gui = new GUI(this);
 
@@ -85,6 +89,8 @@ public class Main extends ApplicationAdapter {
             csm = new CascadeShadowMap(Settings.numCascades);
             sceneManager.setCascadeShadowMap(csm);
         }
+
+        sceneManager.environment.set(new PBRFloatAttribute(PBRFloatAttribute.ShadowBias, 1f/Settings.inverseShadowBias));
 
         // setup quick IBL (image based lighting)
         IBLBuilder iblBuilder = IBLBuilder.createOutdoor(light);

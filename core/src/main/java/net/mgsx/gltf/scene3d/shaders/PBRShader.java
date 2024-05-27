@@ -37,6 +37,8 @@ import net.mgsx.gltf.scene3d.model.WeightVector;
 
 public class PBRShader extends DefaultShader
 {
+    private static final int MAX_CASCADES = 8;
+
     private static final Vector2 v2 = new Vector2();
 
     public final static Uniform baseColorTextureUniform = new Uniform("u_diffuseTexture", PBRTextureAttribute.BaseColorTexture);
@@ -528,9 +530,9 @@ public class PBRShader extends DefaultShader
 //    public int u_csmTransforms;
     // MS
     protected int numCSM = 0;
-    protected int[] u_csmSamplers = new int[8];            // max cascades is 8
-    protected int[] u_csmPCFClip = new int[8];
-    protected int[] u_csmTransforms = new int[8];
+    protected int[] u_csmSamplers = new int[MAX_CASCADES];
+    protected int[] u_csmPCFClip = new int[MAX_CASCADES];
+    protected int[] u_csmTransforms = new int[MAX_CASCADES];
     // end MS
 
     private static final Matrix3 textureTransform = new Matrix3();
@@ -546,7 +548,6 @@ public class PBRShader extends DefaultShader
         vertexColorLayers = computeVertexColorLayers(renderable);
 
         numCSM = computeNumberOfShadowCascades(renderable);
-        Gdx.app.log("canRender","csm count = "+numCSM);
 
         // base color
         u_BaseColorTexture = register(baseColorTextureUniform, baseColorTextureSetter);
@@ -653,7 +654,6 @@ public class PBRShader extends DefaultShader
 
         // compare number of shadow map cascades
         if(numCSM != computeNumberOfShadowCascades(renderable)) {
-            Gdx.app.log("canRender","csm count mismatch got "+numCSM+" expected "+computeNumberOfShadowCascades(renderable));
             return false;
         }
 

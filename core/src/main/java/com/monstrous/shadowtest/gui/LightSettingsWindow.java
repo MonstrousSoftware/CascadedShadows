@@ -7,7 +7,6 @@ import com.monstrous.shadowtest.Main;
 import com.monstrous.shadowtest.Settings;
 import net.mgsx.gltf.scene3d.attributes.PBRFloatAttribute;
 import net.mgsx.gltf.scene3d.scene.CascadeShadowMap;
-import text.formic.Stringf;
 
 // Debug window for some in-game tweaking
 // Typically, these modify members of the Settings class.
@@ -113,14 +112,14 @@ public class LightSettingsWindow extends Window {
 
 
             final Label CSValue = new Label("", skin);
-//            CSValue.setText(Stringf.format("%f", Settings.cascadeSplitDivisor));
+            CSValue.setText(FormatUtils.formatFloat( Settings.cascadeSplitDivisor));
             final Slider csSlider = new Slider(1.0f, 16.0f, 0.1f, false, skin);
             csSlider.setValue(Settings.cascadeSplitDivisor);
             csSlider.addListener(new ChangeListener() {
                 @Override
                 public void changed(ChangeEvent event, Actor actor) {
                     Settings.cascadeSplitDivisor = csSlider.getValue();
-//                    CSValue.setText(Stringf.format("%f", Settings.cascadeSplitDivisor));
+                    CSValue.setText(FormatUtils.formatFloat( Settings.cascadeSplitDivisor));
                 }
             });
             add(new Label("cascade split divisor:", skin)).left();
@@ -139,8 +138,7 @@ public class LightSettingsWindow extends Window {
             public void changed(ChangeEvent event, Actor actor) {
                 Settings.inverseShadowBias = (int) biasSlider.getValue();
                 biasValue.setText( Settings.inverseShadowBias);
-                //if(Settings.usePBRshader)
-                    screen.sceneManager.environment.set(new PBRFloatAttribute(PBRFloatAttribute.ShadowBias, 1f/Settings.inverseShadowBias));
+                screen.sceneManager.environment.set(new PBRFloatAttribute(PBRFloatAttribute.ShadowBias, 1f/Settings.inverseShadowBias));
 
             }
         });
@@ -148,14 +146,14 @@ public class LightSettingsWindow extends Window {
         add(biasSlider).colspan(2).width(400f); row();
 
         final Label vpValue = new Label("", skin);
-        vpValue.setText( Stringf.format("%d", Settings.shadowViewportSize));
+        vpValue.setText(  Settings.shadowViewportSize);
         final Slider vpSlider = new Slider(10f, 8000.0f, 10f, false, skin);
         vpSlider.setValue(Settings.shadowViewportSize);
         vpSlider.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 Settings.shadowViewportSize = (int) vpSlider.getValue();
-                vpValue.setText( Stringf.format("%d", Settings.shadowViewportSize));
+                vpValue.setText( Settings.shadowViewportSize);
                 screen.light.setViewport(Settings.shadowViewportSize, Settings.shadowViewportSize, 0f, 300f);
             }
         });
