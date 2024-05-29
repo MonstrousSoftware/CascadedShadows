@@ -92,7 +92,7 @@ public class PBRShaderProvider extends DefaultShaderProvider
 		String prefix = "";
 		// TODO optimize double loop
 		for(VertexAttribute att : renderable.meshPart.mesh.getVertexAttributes()){
-			for(int i=0 ; i<PBRCommon.MAX_MORPH_TARGETS ; i++){
+			for(int i = 0; i< PBRCommon.MAX_MORPH_TARGETS ; i++){
 				if(att.usage == PBRVertexAttributes.Usage.PositionTarget && att.unit == i){
 					prefix += "#define " + "position" + i + "Flag\n";
 				}else if(att.usage == PBRVertexAttributes.Usage.NormalTarget && att.unit == i){
@@ -473,7 +473,7 @@ public class PBRShaderProvider extends DefaultShaderProvider
 			}
 		}
 
-		PBRShader shader = createShader(renderable, config, prefix);
+		net.mgsx.gltf.scene3d.shaders.PBRShader shader = createShader(renderable, config, prefix);
 		checkShaderCompilation(shader.program);
 
 		// prevent infinite loop (TODO remove this for libgdx 1.9.12+)
@@ -490,7 +490,7 @@ public class PBRShaderProvider extends DefaultShaderProvider
 	 * @param config
 	 * @param prefix
 	 */
-	protected PBRShader createShader(Renderable renderable, PBRShaderConfig config, String prefix){
+	protected net.mgsx.gltf.scene3d.shaders.PBRShader createShader(Renderable renderable, PBRShaderConfig config, String prefix){
 		return new PBRShader(renderable, config, prefix);
 	}
 
