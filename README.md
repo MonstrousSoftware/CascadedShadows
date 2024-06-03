@@ -6,21 +6,18 @@ A [libGDX](https://libgdx.com/) project generated with [gdx-liftoff](https://git
 
 ![screenshot.png](screenshot.png)
 
-To get CSM working on web:
-The project includes some modified gdx-gltf files, in particular PBRShader.java and shadows.glsl to make it work with Web GL (gdx-teavm).
-Note: html (GWT) doesn't work because it will use the original PBRShader.java from gdx-gltf instead of the local modified one from the project.
+To get CSM working on web: Use the latest snapshot of gdx-gltf (as of June 3rd, 2024) by having the following line in gradle.properties:
 
-
-This 'hack' will become unnecessary once Pull Request #127 on gdx-gltf is adopted.
-
-
+        gdxGltfVersion=-SNAPSHOT
 
 Light settings menu:
 
 This programme demonstrates how cascaded shadows work in practice and how they can remedy shadow artifacts.
 
-- On startup the camera will rotate automatically around the origin. Use LMB to activate the camera controller to move the camera with the mouse.
-- Zoom in and out with the mouse wheel.  Press RMB to start the automatic rotation again.
+- On startup the camera will rotate automatically around the origin. 
+- Use LMB to activate the camera controller to move the camera with the mouse.
+- Press RMB to start the automatic rotation again.
+- Zoom in and out with the mouse wheel.  
 
 The Light settings menu can be opened and closed with the L button.
 
